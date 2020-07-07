@@ -10,7 +10,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.deepPurpleAccent,
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -20,7 +20,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(18.0),
-                    child: Text('StockedUp',style:TextStyle(fontFamily: 'Logo',color: Colors.white,fontSize: 55,fontWeight: FontWeight.bold)),
+                    child: Text('StockedUp',style:TextStyle(fontFamily: 'Logo',fontSize: 55,fontWeight: FontWeight.bold,color:Colors.white)),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width*0.9,
@@ -32,7 +32,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           "Manage Shipments",
                           "Get Insights",
                         ],
-                        textStyle: TextStyle(fontSize: 28.0,color: Colors.white,fontWeight: FontWeight.bold),
+                        textStyle: TextStyle(fontSize: 28.0,fontWeight: FontWeight.bold,color:Colors.white),
                         textAlign: TextAlign.center,
                         ),
                   ),
@@ -41,14 +41,14 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             ),
               OutlineButton(
                 onPressed: (){},
-                color: Colors.green,
-                //shape:RoundedRectangleBorder(borderRadius: new BorderRadius.circular(15.0)),
+                color: Colors.white,
                 highlightedBorderColor: Colors.white,
-                highlightColor: Colors.green,
-                borderSide: BorderSide(color: Colors.white),
+                borderSide: BorderSide(color:Colors.white),
+                shape:RoundedRectangleBorder(borderRadius: new BorderRadius.circular(10.0)),
+                highlightColor: Colors.deepPurpleAccent,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical:12.0,horizontal:16),
-                  child: Text('Get Started',style: TextStyle(color: Colors.white,fontSize: 22),),
+                  padding: EdgeInsets.symmetric(vertical:12.0,horizontal:18),
+                  child: Text('Get Started',style: TextStyle(color: Colors.white,fontSize: 25),),
                 ),
               )
           ],
