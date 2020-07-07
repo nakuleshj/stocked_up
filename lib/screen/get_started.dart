@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:stocked_up/screen/login_screen.dart';
 
 class GetStartedScreen extends StatefulWidget {
   @override
@@ -20,7 +21,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(18.0),
-                    child: Text('StockedUp',style:TextStyle(fontFamily: 'Logo',fontSize: 55,fontWeight: FontWeight.bold,color:Colors.white)),
+                    child: Hero(tag:'title',child: Text('StockedUp',style:TextStyle(fontFamily: 'Logo',fontSize: 55,fontWeight: FontWeight.bold,color:Colors.white))),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width*0.9,
@@ -40,7 +41,9 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
               ),
             ),
               OutlineButton(
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder:(context)=>LoginScreen()), (route) => false);
+                },
                 color: Colors.white,
                 highlightedBorderColor: Colors.white,
                 borderSide: BorderSide(color:Colors.white),
