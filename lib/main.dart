@@ -7,6 +7,7 @@ class StockedUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(accentColor:Colors.deepPurpleAccent),
       debugShowCheckedModeBanner: false,
       home: GetStartedScreen(),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'signup_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -7,6 +9,28 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final loginFormKey=GlobalKey<FormState>();
+  FirebaseAuth _auth=FirebaseAuth.instance;
+  String enteredEmail,enteredPassword;
+  
+  Future<void> showErrorDialog(String text) async {
+    return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(text),
+        //content: Text('Invalid Email/Password'),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Approve',style: TextStyle(
+                          color: Colors.deepPurpleAccent)),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +62,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       Align(alignment:Alignment.centerLeft,child: Text('Login',style: TextStyle(color:Colors.deepPurpleAccent,fontWeight:FontWeight.bold,fontSize: 28),)),
                       SizedBox(height:18),
                       TextFormField(
+                        onChanged:(value){
+                          enteredEmail=value;
+                        },
                         cursorColor: Colors.deepPurpleAccent,
                         decoration: new InputDecoration(
                             border: new OutlineInputBorder(
@@ -76,6 +103,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: 20,
                       ),
                       TextFormField(
+                        onChanged:(value){
+                          enteredPassword=value;
+                        },
                         cursorColor: Colors.deepPurpleAccent,
                         obscureText: true,
                         decoration: new InputDecoration(
@@ -108,6 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if(password.isEmpty)
                                     return "This field cannot be empty";
                                   else if(password.length<8)
+                                    if (!RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$").hasMatch(password))
                                     return "Invalid password";
                                 },
                       ),
@@ -117,11 +148,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       OutlineButton(
                         onPressed: () {
                           if(loginFormKey.currentState.validate())
-                          Navigator.pushAndRemoveUntil(
+                          _auth.signInWithEmailAndPassword(email: enteredEmail, password: enteredPassword)
+                          .then((value)
+                              {
+                              Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => LoginScreen()),
                               (route) => false);
+
+                              }
+                          ).catchError((onError){
+                            showErrorDialog(onError.code=='ERROR_TOO_MANY_REQUESTS'?'Server Error. Try again Later':'Invalid Email/Password');
+                            print(onError.code);
+                            });
                         },
                         color: Colors.white,
                         highlightedBorderColor: Colors.deepPurpleAccent,

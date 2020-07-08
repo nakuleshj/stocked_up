@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:stocked_up/screen/dashboard.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -7,7 +10,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final signupFormKey=GlobalKey<FormState>();
-  String enteredPassword;
+  FirebaseAuth _auth=FirebaseAuth.instance;
+  Firestore _firestore=Firestore.instance;
+  String enteredBusinessName,enteredEmail,enteredMobileNumber,enteredPassword;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +79,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 labelText: 'Business Name',
                                 labelStyle: TextStyle(
                                     fontSize: 20, color: Colors.deepPurpleAccent)),
+                                    // ignore: missing_return
                                     validator: (businessName){
                                       if(businessName.isEmpty)
                                         return  "This field cannot be empty";
+                                    },
+                                    onChanged: (value){
+                                      enteredBusinessName=value;
                                     },
                           ),
                           SizedBox(
@@ -115,12 +124,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 labelText: 'Email',
                                 labelStyle: TextStyle(
                                     fontSize: 20, color: Colors.deepPurpleAccent)),
+                                // ignore: missing_return
                                 validator: (email){
                                       if(email.isEmpty)
                                         return  "This field can't be empty";
                                       else if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email))
                                         return "Enter a valid Email";
-                                    }
+                                    },
+                                    onChanged: (value){
+                                      enteredEmail=value;
+                                    },
                           ),
                           SizedBox(
                             height: 15,
@@ -205,11 +218,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   labelText: 'Mobile Number',
                                   labelStyle: TextStyle(
                                       fontSize: 20, color: Colors.deepPurpleAccent)),
+                                      // ignore: missing_return
                                       validator: (mobNo){
                                         if(mobNo.isEmpty)
                                           return "This field can't be empty";
                                         else if(mobNo.length<10)
                                           return "Enter a valid 10 digit number";
+                                      },
+                                      onChanged: (value){
+                                        enteredMobileNumber=value;
                                       },
                             ),
                           ),
@@ -250,13 +267,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 labelText: 'Password',
                                 labelStyle: TextStyle(
                                     fontSize: 20, color: Colors.deepPurpleAccent)),
+                                  // ignore: missing_return
                                   validator: (password){
                                   if(password.isEmpty)
                                     return "This field cannot be empty";
                                   else if(password.length<8)
-                                    return "Password must be atleast 8 characters";
-                                  else
-                                    enteredPassword=password;
+                                    if (RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$").hasMatch(password))
+                                    return "Password is too weak";
+                                  
+                                },
+                                onChanged: (value){
+                                  enteredPassword=value;
                                 },
                           ),
                           SizedBox(
@@ -295,6 +316,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 labelText: 'Confirm Password',
                                 labelStyle: TextStyle(
                                     fontSize: 20, color: Colors.deepPurpleAccent)),
+                                     // ignore: missing_return
                                      validator: (confirmPassword){
                                   if(confirmPassword.isEmpty)
                                     return "This field cannot be empty";
@@ -308,12 +330,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           OutlineButton(
                             onPressed: () {
                               if(signupFormKey.currentState.validate())
-                                print("Form is valid");
-                              // Navigator.pushAndRemoveUntil(
-                              //     context,
-                              //     MaterialPageRoute(
-                                      //builder: (context) => LoginScreen()),
-                                  // (route) => false);
+                                _auth.createUserWithEmailAndPassword(email: enteredEmail, password: enteredPassword).then((value){
+                                  _firestore.collection('BusinessDetails').document(value.user.uid).setData({
+                                    'businessName':enteredBusinessName,
+                                    'contactNumber':enteredMobileNumber,
+                                  }).then((value){
+                                    Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Dashboard()),
+                                  (route) => false);
+                                  });
+                                });
                             },
                             color: Colors.white,
                             highlightedBorderColor: Colors.deepPurpleAccent,
