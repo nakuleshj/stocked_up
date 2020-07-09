@@ -23,7 +23,7 @@ class _AddStockState extends State<AddStock> {
       appBar: AppBar(
         backgroundColor: Colors.deepPurpleAccent,
         leading: Icon(Icons.clear),
-        title: Text('Add Stock'),
+        title: Text('Add Stock',style: TextStyle(fontSize: 30)),
       ),
       body: SafeArea(
           child: Padding(
@@ -31,8 +31,10 @@ class _AddStockState extends State<AddStock> {
         child: Form(
           key: addItemFormKey,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Align(alignment:Alignment.centerLeft,child: Text('Stock details:',style: TextStyle(color: Colors.deepPurpleAccent,fontSize: 28,fontWeight: FontWeight.bold),textAlign: TextAlign.left)),
+              SizedBox(height:30),
               TextFormField(
                 onFieldSubmitted: (value) {
                   FocusScope.of(context).nextFocus();
@@ -70,6 +72,7 @@ class _AddStockState extends State<AddStock> {
                   enteredItemName = value;
                 },
               ),
+              SizedBox(height:20),
               TextFormField(
                 inputFormatters: [
                   WhitelistingTextInputFormatter.digitsOnly,
@@ -111,6 +114,7 @@ class _AddStockState extends State<AddStock> {
                   enteredRate = rate;
                 },
               ),
+              SizedBox(height:20),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -192,6 +196,7 @@ class _AddStockState extends State<AddStock> {
                   )
                 ],
               ),
+              SizedBox(height:20),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -274,6 +279,7 @@ class _AddStockState extends State<AddStock> {
                   )
                 ],
               ),
+              SizedBox(height:50),
               OutlineButton(
                 onPressed: () {
                   //if(addItemFormKey.currentState.validate())
