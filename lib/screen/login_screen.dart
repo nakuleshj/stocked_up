@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:stocked_up/screen/dashboard.dart';
 import 'signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 class LoginScreen extends StatefulWidget {
@@ -22,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //content: Text('Invalid Email/Password'),
         actions: <Widget>[
           FlatButton(
-            child: Text('Approve',style: TextStyle(
+            child: Text('Okay',style: TextStyle(
                           color: Colors.deepPurpleAccent)),
             onPressed: () {
               Navigator.of(context).pop();
@@ -154,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
+                                  builder: (context) => Dashboard()),
                               (route) => false);
 
                               }

@@ -183,6 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Expanded(
                             flex:4,
                                   child: TextFormField(
+                                    keyboardType: TextInputType.phone,
                                     onFieldSubmitted: (value){
                               FocusScope.of(context).nextFocus();
                             },
