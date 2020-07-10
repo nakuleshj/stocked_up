@@ -11,6 +11,12 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final firestore = Firestore.instance;
   final _auth=FirebaseAuth.instance;
+  FirebaseUser loggedInUser;
+  @override
+  void initState() {
+    _auth.currentUser().then((value) => loggedInUser=value);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +24,7 @@ class _DashboardState extends State<Dashboard> {
         height: 60,
         width: 60,
         child: FloatingActionButton(elevation: 15,onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStock()));
+          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStock(user:loggedInUser)));
         },child:
             Icon(Icons.add,size: 35,),
         ),
