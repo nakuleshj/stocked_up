@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AddStock extends StatefulWidget {
-  AddStock({this.user});
+  AddStock({this.user,this.barcode});
   final FirebaseUser user;
+  final String barcode;
   @override
   _AddStockState createState() => _AddStockState();
 }
@@ -261,7 +262,8 @@ class _AddStockState extends State<AddStock> {
                         .collection('Inventory')
                         .document(widget.user.uid)
                         .collection('Items')
-                        .add({
+                        .document(widget.barcode)
+                        .setData({
                       'productName': enteredProductName,
                       'productLocation': enteredProductLoc,
                       'rate': enteredRate,

@@ -25,7 +25,8 @@ class _DashboardState extends State<Dashboard> {
         height: 60,
         width: 60,
         child: FloatingActionButton(elevation: 15,onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStock(user:loggedInUser)));
+          FlutterBarcodeScanner.scanBarcode("#ff6666","Cancel",true,ScanMode.BARCODE).then((value) => Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStock(user:loggedInUser,barcode:value))));
+          ;
         },child:
             Icon(Icons.add,size: 35,),
         ),
