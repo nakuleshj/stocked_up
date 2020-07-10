@@ -20,6 +20,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       floatingActionButton: Container(
         height: 60,
         width: 60,
@@ -74,6 +75,17 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
+            Expanded(child: StreamBuilder<QuerySnapshot>(
+              stream: firestore.collection('Inventory').document(loggedInUser.uid).collection('Items').snapshots(),
+              builder: (context,snapshot){
+              final products=snapshot.data.documents;
+              if(snapshot==null)
+                return null;
+              List<ListTile> productStock=[];
+              productStock.add(
+                ListTile()
+              );
+            }),)
             ]
         ),
       ),),
