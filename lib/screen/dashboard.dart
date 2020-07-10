@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:stocked_up/components/inventory_item_action_button.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:stocked_up/screen/add_stock.dart';
 class Dashboard extends StatefulWidget {
   @override
@@ -75,17 +75,40 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            Expanded(child: StreamBuilder<QuerySnapshot>(
-              stream: firestore.collection('Inventory').document(loggedInUser.uid).collection('Items').snapshots(),
-              builder: (context,snapshot){
-              final products=snapshot.data.documents;
-              if(snapshot==null)
-                return null;
-              List<ListTile> productStock=[];
-              productStock.add(
-                ListTile()
-              );
-            }),)
+            Expanded(child: ListView(
+              children: <Widget>[
+                Card(child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                    Text('Product Name',style:TextStyle(fontSize:20,color: Colors.deepPurpleAccent)),
+                    SizedBox(height:5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text("Location: shelf123",style:TextStyle(fontSize:16)),
+                        Text('Available Stock',style:TextStyle(fontSize:16))
+                      ],
+                    ),
+                    SizedBox(height:5),
+                    Text("Rate: ₹00.00",style:TextStyle(fontSize:16))
+                  ],),
+                ),),
+              ],
+            )
+            // StreamBuilder<QuerySnapshot>(
+            //   stream: firestore.collection('Inventory').document(loggedInUser.uid).collection('Items').snapshots(),
+            //   builder: (context,snapshot){
+            //   final products=snapshot.data.documents;
+            //   if(snapshot==null)
+            //     return null;
+            //   List<Card> productStock=[];
+            //   productStock.add(
+            //     
+            //   );
+            // }),
+            )
             ]
         ),
       ),),
