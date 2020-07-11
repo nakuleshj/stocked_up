@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:stocked_up/screen/add_stock.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:stocked_up/screen/get_started.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -23,7 +25,11 @@ class _DashboardState extends State<Dashboard> {
         }));
     super.initState();
   }
-   Future<void> editStockQuantity() async {
+   Future<void> editStockQuantity(String stock,String barcode) async {
+      int stockQty,enteredStockQty;
+      String units;
+     stockQty=int.parse(stock.split(" ")[0]);
+     units=stock.split(" ")[1];
     return showDialog<void>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -31,6 +37,9 @@ class _DashboardState extends State<Dashboard> {
       return AlertDialog(
         title: Text('Edit Stock Quantity'),
         content: TextFormField(
+          onChanged: (value){
+            enteredStockQty=int.parse(value);
+          },
           decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.deepPurpleAccent),
@@ -39,21 +48,18 @@ class _DashboardState extends State<Dashboard> {
               borderSide: BorderSide(color: Colors.deepPurpleAccent),
             ),
           ),
+          inputFormatters: [
+            WhitelistingTextInputFormatter.digitsOnly
+          ],
+          keyboardType: TextInputType.number,
           cursorColor: Colors.deepPurpleAccent,
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('Decrement',style: TextStyle(
+            child: Text('Add Stock',style: TextStyle(
                           color: Colors.deepPurpleAccent)),
             onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          FlatButton(
-            child: Text('Increment',style: TextStyle(
-                          color: Colors.deepPurpleAccent)),
-            onPressed: () {
-              Navigator.of(context).pop();
+              firestore.collection("Inventory").document(loggedInUser.uid).collection('Items').document(barcode).updateData({'stockQuantity':'${enteredStockQty+stockQty} $units'}).then((value) => Navigator.of(context).pop());
             },
           ),
         ],
@@ -93,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
                     else
                       {
                         print(value.data);
-                        editStockQuantity();
+                        editStockQuantity(value.data['stockQuantity'],barcode);
                         }
                   });
                 });
@@ -160,7 +166,7 @@ class _DashboardState extends State<Dashboard> {
             padding: EdgeInsets.all(8.0),
             child: GestureDetector(
                 onTap: () {
-                  _auth.signOut();
+                  _auth.signOut().then((value) =>  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>GetStartedScreen()), (route) => false));
                 },
                 child: Text(
                   'Logout',
