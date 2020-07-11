@@ -27,15 +27,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical:100.0),
-                    child: Hero(
-                      tag: 'title',
-                      child: Text('StockedUp',
+                    child:  Text('StockedUp',
                           style: TextStyle(
                               fontFamily: 'Logo',
                               fontSize: 55,
                               fontWeight: FontWeight.bold,
                               color: Colors.deepPurpleAccent)),
-                    ),
+                    
                   ),
                 ),
                 Form(

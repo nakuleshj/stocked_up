@@ -38,7 +38,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.all(18.0),
-                    child: Hero(tag:'title',child: Text('StockedUp',style:TextStyle(fontFamily: 'Logo',fontSize: 55,fontWeight: FontWeight.bold,color:Colors.white))),
+                    child: Text('StockedUp',style:TextStyle(fontFamily: 'Logo',fontSize: 55,fontWeight: FontWeight.bold,color:Colors.white)),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width*0.9,
