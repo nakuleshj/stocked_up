@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:stocked_up/screen/dashboard.dart';
 import 'signup_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -95,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     return "This field cannot be empty";
                                   else if(!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email))
                                     return "Enter a valid Email";
+                                  return null;
                                 },
                       ),
                       SizedBox(
@@ -138,6 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   else if(password.length<8)
                                     if (!RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$").hasMatch(password))
                                     return "Invalid password";
+                                  return null;
                                 },
                       ),
                       SizedBox(

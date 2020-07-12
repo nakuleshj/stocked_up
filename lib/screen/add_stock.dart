@@ -20,6 +20,7 @@ class _AddStockState extends State<AddStock> {
       enteredProductLoc,
       totalStock,
       totalStockUnits = 'Units';
+  List<String> productSearch=[];
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +85,9 @@ class _AddStockState extends State<AddStock> {
                         labelText: 'Product Name',
                         labelStyle: TextStyle(
                             fontSize: 20, color: Colors.deepPurpleAccent)),
-                    // ignore: missing_return
-                    validator: (ProductName) {
-                      if (ProductName.isEmpty) return "This field cannot be empty";
+                    validator: (productName) {
+                      if (productName.isEmpty) return "This field cannot be empty";
+                      return null;
                     },
                     onChanged: (value) {
                       enteredProductName = value;
@@ -165,8 +166,8 @@ class _AddStockState extends State<AddStock> {
                         labelStyle: TextStyle(
                             fontSize: 20, color: Colors.deepPurpleAccent)),
                     // ignore: missing_return
-                    validator: (ProductLoc) {
-                      if (ProductLoc.isEmpty) return "This field cannot be empty";
+                    validator: (productLoc) {
+                      if (productLoc.isEmpty) return "This field cannot be empty";
                     },
                     onChanged: (value) {
                       enteredProductLoc = value;
@@ -258,8 +259,15 @@ class _AddStockState extends State<AddStock> {
                   SizedBox(height: 50),
                   OutlineButton(
                     onPressed: () {
+                      String temp='';
                       if (addProductFormKey.currentState.validate())
-                        _firestore
+                        {
+                          for(var character in enteredProductName.toLowerCase().split(""))
+                            {
+                            temp+=character;
+                            productSearch.add(temp);
+                            }
+                          _firestore
                             .collection('Inventory')
                             .document(widget.user.uid)
                             .collection('Items')
@@ -268,8 +276,9 @@ class _AddStockState extends State<AddStock> {
                           'productName': enteredProductName,
                           'productLocation': enteredProductLoc,
                           'rate': enteredRate,
-                          'stockQuantity': '${totalStock + ' ' + totalStockUnits}'
-                        }).then((value) => Navigator.pop(context));
+                          'stockQuantity': '${totalStock + ' ' + totalStockUnits}',
+                          'searchIndex':productSearch
+                        }).then((value) => Navigator.pop(context));}
                     },
                     color: Colors.white,
                     highlightedBorderColor: Colors.deepPurpleAccent,

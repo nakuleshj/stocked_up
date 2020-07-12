@@ -14,6 +14,8 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   bool _loading = true;
+  bool _searchActive=false;
+  String query;
   final firestore = Firestore.instance;
   final _auth = FirebaseAuth.instance;
   FirebaseUser loggedInUser;
@@ -65,6 +67,7 @@ class _DashboardState extends State<Dashboard> {
         ],
       );});
   }
+  var _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,14 +150,24 @@ class _DashboardState extends State<Dashboard> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
                 child: TextFormField(
+                  controller: _searchController,
                   onFieldSubmitted: (value) {
-                    //search code here
+                    _searchActive=true;
+                    setState(() {
+                    query=value;
+                    _searchController.clear();
+                    });
                   },
                   textInputAction: TextInputAction.search,
                   cursorColor: Colors.deepPurpleAccent,
                   decoration: InputDecoration(
-                      labelText: "Search Inventory...",
-                      labelStyle: TextStyle(color: Colors.deepPurpleAccent),
+                    suffixIcon: IconButton(icon: Icon(Icons.clear,color: Colors.grey,), onPressed:(){setState(() {
+                      _searchActive=false;
+                      FocusScope.of(context).unfocus();
+                      FocusScope.of(context).unfocus();
+                    });}),
+                      hintText: "Search Inventory...",
+                      hintStyle: TextStyle(color: Colors.grey),
                       prefixIcon: Icon(
                         Icons.search,
                         color: Colors.deepPurpleAccent,
@@ -182,7 +195,7 @@ class _DashboardState extends State<Dashboard> {
                           Colors.deepPurpleAccent),
                     ))
                   : StreamBuilder<QuerySnapshot>(
-                      stream: firestore
+                      stream: _searchActive?firestore.collection('Inventory').document(loggedInUser.uid).collection('Items').where('searchIndex',arrayContains:query.toLowerCase()).snapshots():firestore
                           .collection('Inventory')
                           .document(loggedInUser.uid)
                           .collection('Items')
