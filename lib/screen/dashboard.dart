@@ -109,51 +109,6 @@ class _DashboardState extends State<Dashboard> {
                 size: 28,
               ),
             ),
-            SizedBox(
-              height: 5,
-            ),
-            FloatingActionButton(
-              heroTag: 'edit',
-              elevation: 1,
-              onPressed: () {
-                FlutterBarcodeScanner.scanBarcode(
-                        "#ff6666", "Cancel", true, ScanMode.BARCODE)
-                    .then(
-                  (value) => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          AddStock(user: loggedInUser, barcode: value),
-                    ),
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.edit,
-                size: 28,
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            FloatingActionButton(
-              heroTag: 'sell',
-              elevation: 1,
-              onPressed: () {
-                FlutterBarcodeScanner.scanBarcode(
-                        "#ff6666", "Cancel", true, ScanMode.BARCODE)
-                    .then(
-                  (value) => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          AddStock(user: loggedInUser, barcode: value),
-                    ),
-                  ),
-                );
-              },
-              child: FaIcon(FontAwesomeIcons.rupeeSign, size: 28),
-            ),
           ],
         ),
       ),

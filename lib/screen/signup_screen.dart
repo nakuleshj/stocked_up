@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:stocked_up/screen/dashboard.dart';
+import 'package:stocked_up/screen/login_screen.dart';
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -366,7 +367,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Text('Already have an account?'),
                                 GestureDetector(
                                   onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
                                   },
                                    child: Text(
                                     ' Login',
